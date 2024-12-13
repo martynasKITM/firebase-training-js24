@@ -7,8 +7,13 @@ import 'firebase/compat/firestore';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
- 
-};
+    apiKey: "AIzaSyCq8jTYYeiakoNaUPmiui_y2wqzjns0zG4",
+    authDomain: "logerapp-c7cb7.firebaseapp.com",
+    projectId: "logerapp-c7cb7",
+    storageBucket: "logerapp-c7cb7.firebasestorage.app",
+    messagingSenderId: "696785009592",
+    appId: "1:696785009592:web:414877daa30efc13ca6d4d"
+  };
 
 // Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig);

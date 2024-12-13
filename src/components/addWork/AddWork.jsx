@@ -1,15 +1,21 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import * as service from "../../services/WorksCRUDservices";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import {auth} from "../../services/AuthServices";
+import { useAuthState } from "react-firebase-hooks/auth";
 const AddWork = ()=>{
     const navigate  = useNavigate();
+    const {id} = useParams();
+    const [user, loading, error] = useAuthState(auth);
+
     const [formData, setFormData] = useState({
         date:'',
         company:'',
         service: '',
         description: '',
         from: '',
-        to: ''
+        to: '',
+        uid:''
     });
 
     const handelChange = (e)=>{
@@ -22,11 +28,20 @@ const AddWork = ()=>{
 
     const submitHandler = (e)=>{
         e.preventDefault();
-        service.addWork(formData);
+        if(id){
+            service.updateWork(id, formData)
+        }else{
+            service.addWork({
+                ...formData,
+                uid: user.uid
+            });
+        }
         navigate('/');
     }
 
-    console.log(formData)
+    useEffect(()=>{
+        id && service.showById(item=>setFormData(item), id);
+    },[id])
     return(
         <div className="card">
             <div className="card-header">
@@ -64,7 +79,7 @@ const AddWork = ()=>{
                         <input type="time" name="to" className="form-control" onChange={handelChange} value={formData.to} />
                     </div>
                     <div className="mb-3">
-                        <button type="submit" className="btn btn-primary">Saugoti</button>
+                        <button type="submit" className="btn btn-primary">{(id)?"Atnaujinti":"Saugoti"}</button>
                     </div>
                 </form>
             </div>
